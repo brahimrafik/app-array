@@ -29,4 +29,4 @@ set -eu
 set -o pipefail
 
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>&1)
-
+echo $(pwd)
