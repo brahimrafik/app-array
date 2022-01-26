@@ -181,49 +181,6 @@ Resources:
   ##################### Code Build Projects (Linux)
 
 
-  ############### Pipeline
-
-  AutoUpdateCodePipeline:
-    Type: AWS::CodePipeline::Pipeline
-    Properties:
-      RestartExecutionOnUpdate: true
-      Name: !Sub ${AWS::StackName}-autoupdatecodepipeline
-      RoleArn: !GetAtt AutoUpdateCodePipelineRole.Arn
-      ArtifactStore:
-        Type: S3
-        Location: !Ref ArtifactsS3Bucket
-      Stages: 
-        - Name: Source
-          Actions:
-            - Name: Source
-              ActionTypeId:
-                Category: Source
-                Owner: AWS
-                Version: 1
-                Provider: CodeCommit
-              OutputArtifacts:
-                - Name: SourceArtifact
-              Configuration:
-                BranchName: !Ref BranchName
-                RepositoryName: !GetAtt LocalCodeCommit.Name
-                PollForSourceChanges: true
-              RunOrder: 1
-        - Name: Deploy
-          Actions:
-            - Name: Deploy
-              ActionTypeId:
-                Category: Build
-                Provider: CodeBuild
-                Owner: AWS
-                Version: 1
-              InputArtifacts:
-                - Name: SourceArtifact
-              OutputArtifacts:
-                - Name: DeployArtifact
-              Configuration:
-                ProjectName: !Ref AutoUpdateCodeBuildProject
-              RunOrder: 1
-
   ############# Pipeline
 
 
@@ -314,44 +271,7 @@ Resources:
               Configuration:
                 ProjectName: !Ref DockerBuildCodeBuildProject
               RunOrder: 2
-              
-  testCodeBuildProject:
-    Type: AWS::CodeBuild::Project
-    Properties:
-      Name: !Sub ${AWS::StackName}-testcodebuildproject
-      Description: update the current stack
-      ServiceRole: !GetAtt AutoUpdateCodeBuildRole.Arn
-      Artifacts:
-        Type: CODEPIPELINE
-      Environment:
-        Type: LINUX_CONTAINER
-        ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
-        EnvironmentVariables:
-          - Name: BranchName
-            Value: !Ref BranchName
-          - Name: ArtifactsS3Bucket
-            Value: !Ref ArtifactsS3Bucket
-      Source:
-        Type: CODEPIPELINE
-        BuildSpec: !Sub |
-          version: 0.2
-          phases:
-            install:
-              runtime-versions:
-                python: 3.8
-              commands:
-                - echo "install"
-            pre_build:
-              commands:
-              - echo "pre_build"
-            build:
-              commands:
-                - echo "build"
-                - bash ./scripts/aws-deploy.sh
-            post_build:
-              commands:
-                - echo "post_build start"
+            
                 
 ####### EKS + Docker project #####
 
