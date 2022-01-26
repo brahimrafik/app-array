@@ -273,7 +273,7 @@ Resources:
               RunOrder: 1
         - Name: Deploy
           Actions:
-            - Name: test
+            - Name: AutoUpdate
               ActionTypeId:
                 Category: Build
                 Provider: CodeBuild
@@ -282,9 +282,9 @@ Resources:
               InputArtifacts:
                 - Name: SourceOutput
               OutputArtifacts:
-                - Name: testArtifact
+                - Name: AutoUpdateArtifact
               Configuration:
-                ProjectName: !Ref testCodeBuildProject
+                ProjectName: !Ref AutoUpdateCodeBuildProject
               RunOrder: 1
 
             - Name: EKSCluster
@@ -352,7 +352,7 @@ Resources:
             post_build:
               commands:
                 - echo "post_build start"
-
+                
 ####### EKS + Docker project #####
 
   EKSClusterCodeBuildProject:
