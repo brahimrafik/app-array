@@ -32,7 +32,7 @@ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>&1)
 echo $(pwd)
 docker --version
 REPOSITORY_URI="478435181338.dkr.ecr.eu-west-3.amazonaws.com/ecr_devops_bald_bis"
-IMAGE_TAG="1.0.0"
+IMAGE_TAG="1.0.1"
 
 #systemctl start docker
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AccountId}.dkr.ecr.${AWS_REGION}.amazonaws.com
