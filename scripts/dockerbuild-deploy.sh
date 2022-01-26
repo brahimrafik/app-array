@@ -34,7 +34,7 @@ docker --version
 REPOSITORY_URI="478435181338.dkr.ecr.eu-west-3.amazonaws.com/ecr_devops_bald_bis"
 IMAGE_TAG="1.0.0"
 
-systemctl start docker
+#systemctl start docker
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AccountId}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
 docker build -t $REPOSITORY_URI:latest .
