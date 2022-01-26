@@ -337,7 +337,7 @@ Resources:
           phases:
             install:
               runtime-versions:
-                python: 3.8
+                docker: 18
               commands:
                 - echo "install"
             pre_build:
