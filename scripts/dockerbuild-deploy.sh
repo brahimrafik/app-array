@@ -31,3 +31,8 @@ set -o pipefail
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>&1)
 echo $(pwd)
 docker --version
+REPOSITORY_URI="478435181338.dkr.ecr.eu-west-3.amazonaws.com/ecr_devops_bald_bis"
+IMAGE_TAG="1.0.0"
+docker build -t $REPOSITORY_URI:latest .
+docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+docker push $REPOSITORY_URI:$IMAGE_TAG
